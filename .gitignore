@@ -1,2 +1,4 @@
-# Apple jazz
+.gitignore
+
+# Apple stuff
 .DS_Store
