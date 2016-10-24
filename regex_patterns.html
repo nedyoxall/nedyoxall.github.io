@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>A Life in Data</title>
+        <title>Common Regex Patterns</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
 
         <!--[if IE]>
@@ -15,16 +15,38 @@
                 <h1><a href="/">A Life in Data </a></h1>
                 <nav><ul>
                     <li><a href="/pages/homepage.html">Home</a></li>
-                    <li><a href="/category/coding.html">Coding</a></li>
+                    <li class="active"><a href="/category/coding.html">Coding</a></li>
                     <li><a href="/category/data-science.html">Data Science</a></li>
                     <li><a href="/category/random.html">Random</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
-<ul>
-    <li><a href="/category/coding.html">Coding</a></li>
-    <li><a href="/category/data-science.html">Data Science</a></li>
-    <li><a href="/category/random.html">Random</a></li>
-</ul>
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/regex_patterns.html" rel="bookmark"
+           title="Permalink to Common Regex Patterns">Common Regex Patterns</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-10-23T09:10:00+01:00">
+                Published: Sun 23 October 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/ned.html">Ned</a>
+        </address>
+<p>In <a href="/category/coding.html">Coding</a>.</p>
+<p>tags: <a href="/tag/tutorial.html">tutorial</a> <a href="/tag/regex.html">regex</a> </p>
+</footer><!-- /.post-info -->      <p>Here are some common regular expression patterns that I seem to use regularly, but can never remember how they're written: </p>
+<h2>Lookbehinds and Lookaheads</h2>
+<p>Lookbehind (where <code>xyz</code> is the pattern you're looking for):</p>
+<p><code>(?&lt;=xyz)this_will_be_matched</code></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>

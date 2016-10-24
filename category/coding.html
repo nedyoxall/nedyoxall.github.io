@@ -17,12 +17,62 @@
                     <li><a href="/pages/homepage.html">Home</a></li>
                     <li class="active"><a href="/category/coding.html">Coding</a></li>
                     <li><a href="/category/data-science.html">Data Science</a></li>
+                    <li><a href="/category/random.html">Random</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/getting_started_with_mongodb.html">Getting Started with MongoDB</a></h1>
+                    <h1 class="entry-title"><a href="/regex_patterns.html">Common Regex Patterns</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2016-10-23T09:10:00+01:00">
+                Published: Sun 23 October 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/ned.html">Ned</a>
+        </address>
+<p>In <a href="/category/coding.html">Coding</a>.</p>
+<p>tags: <a href="/tag/tutorial.html">tutorial</a> <a href="/tag/regex.html">regex</a> </p>
+</footer><!-- /.post-info --><p>Here are some common regular expression patterns that I seem to use regularly, but can never remember how they're written: </p>
+<h2>Lookbehinds and Lookaheads</h2>
+<p>Lookbehind (where <code>xyz</code> is the pattern you're looking for):</p>
+<p><code>(?&lt;=xyz)this_will_be_matched</code></p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/vim_cheatsheet.html" rel="bookmark"
+                           title="Permalink to A Little Vim Cheatsheet">A Little Vim Cheatsheet</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-10-23T09:00:00+01:00">
+                Published: Sun 23 October 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/ned.html">Ned</a>
+        </address>
+<p>In <a href="/category/coding.html">Coding</a>.</p>
+<p>tags: <a href="/tag/tutorial.html">tutorial</a> <a href="/tag/vim.html">vim</a> </p>
+</footer><!-- /.post-info -->                
+                <a class="readmore" href="/vim_cheatsheet.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/getting_started_with_mongodb.html" rel="bookmark"
+                           title="Permalink to Getting Started with MongoDB">Getting Started with MongoDB</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2016-10-11T11:30:00+01:00">
                 Published: Tue 11 October 2016
@@ -33,48 +83,10 @@
         </address>
 <p>In <a href="/category/coding.html">Coding</a>.</p>
 <p>tags: <a href="/tag/tutorial.html">tutorial</a> <a href="/tag/mongodb.html">mongodb</a> </p>
-</footer><!-- /.post-info --><p>The MongoDB documentation is really, really excellent. Some of the best I've ever come across - it can be found <a href="https://docs.mongodb.com/getting-started/shell/">here</a>. The main reason for this guide is to provide a super concise summary of how to get up and running with Mongo on a Mac.</p>
-<h2>Installation</h2>
-<p>This is super simple with <a href="http://brew.sh/">Homebrew</a>. From the command line, run:</p>
-<div class="highlight"><pre><span></span>brew install mongodb
-</pre></div>
-
-
-<p>(If you want to see what packages you already have installed with brew, use <code>brew list</code>).</p>
-<h2>Starting MongoDB</h2>
-<p>Also super easy. First create a directory where you want all the data to be stored. By default, Mongo assumes that this is at <code>/data/db</code>, but you can put it in any directory you want. Then run:</p>
-<div class="highlight"><pre><span></span>mongod --dbpath &lt;path to data directory&gt;
-</pre></div>
-
-
-<p>If you then want to connect to the Mongo shell, open another terminal and type <code>mongo</code>. This will connect to the running MongoDB instance.</p>
-<h2>Creating a Database/Collection</h2>
-<p>To create a database:</p>
-<div class="highlight"><pre><span></span>use &lt;db_name&gt;
-</pre></div>
-
-
-<p>To drop it (once using):</p>
-<div class="highlight"><pre><span></span>db.dropDatabase()
-</pre></div>
-
-
-<p>List databases:</p>
-<div class="highlight"><pre><span></span>show dbs
-</pre></div>
-
-
-<p>Create a collection (without any special options):</p>
-<div class="highlight"><pre><span></span>db.createCollection(&quot;&lt;collection_name&gt;&quot;)
-</pre></div>
-
-
-<p>s</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                
+                <a class="readmore" href="/getting_started_with_mongodb.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -92,7 +104,7 @@
                 By                         <a class="url fn" href="/author/ned.html">Ned</a>
         </address>
 <p>In <a href="/category/coding.html">Coding</a>.</p>
-<p>tags: <a href="/tag/tutorial.html">tutorial</a> <a href="/tag/python.html">python</a> </p>
+<p>tags: <a href="/tag/tutorial.html">tutorial</a> <a href="/tag/python.html">python</a> <a href="/tag/regex.html">regex</a> </p>
 </footer><!-- /.post-info -->                
                 <a class="readmore" href="/python_and_regex.html">read more</a>
                 </div><!-- /.entry-content -->

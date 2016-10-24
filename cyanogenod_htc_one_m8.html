@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Putting Cyanogenmod on HTC One M8</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Life in Data </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/homepage.html">Home</a></li>
+                    <li><a href="/category/coding.html">Coding</a></li>
+                    <li><a href="/category/data-science.html">Data Science</a></li>
+                    <li class="active"><a href="/category/random.html">Random</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/cyanogenod_htc_one_m8.html" rel="bookmark"
+           title="Permalink to Putting Cyanogenmod on HTC One M8">Putting Cyanogenmod on HTC One M8</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-10-24T08:30:00+01:00">
+                Published: Mon 24 October 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/ned.html">Ned</a>
+        </address>
+<p>In <a href="/category/random.html">Random</a>.</p>
+<p>tags: <a href="/tag/random.html">random</a> <a href="/tag/phone.html">phone</a> </p>
+</footer><!-- /.post-info -->      <p>My HTC One M8 was starting to get a little laggy, so I thought I'd fiddle around with some custom ROMs to try and get things running more smoothly. </p>
+<p>There are plenty of guides for installing Cyanogenmod dotted around the internet (<a href="http://www.techradar.com/how-to/phone-and-communications/mobile-phones/how-to-install-cyanogenmod-13-on-your-android-phone-1321093">this</a> one was particularly useful), but I encountered a few problems that are worth noting down - especially because I know I won't remember how I did any of this in a few weeks time!</p>
+<p>Here's my recipe (using a Mac):</p>
+<ol>
+<li>
+<p>Install <a href="https://developer.android.com/studio/index.html">Android Studio</a>, and get the most recent SDK (you'll be prompted to download it the first time you open the application).</p>
+</li>
+<li>
+<p>Add the <code>platform-tools</code> directory to your <code>$PATH</code> variable. This allows you to use the command line tools we need later on:</p>
+<div class="highlight"><pre><span></span><span class="x">echo &#39;export PATH=</span><span class="p">$</span><span class="nv">PATH</span><span class="x">:&#39;</span><span class="p">$</span><span class="nv">HOME</span><span class="x">&#39;/Library/Android/sdk/platform-tools&#39; &gt;&gt; ~/.bash_profile</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>Enable USB debugging on your phone.</p>
+</li>
+<li>
+<p>Unlock the phone:</p>
+<ul>
+<li>First start the bootloader: <code>adb reboot bootloader</code></li>
+<li>Note that <code>fastboot oem unlock</code> won't work with HTC devices - you need to get the unlock authorisation code.</li>
+<li>Get the identifier token: <code>fastboot oem get_identifier_token</code></li>
+<li>Copy and paste this to the HTC dev website <a href="http://www.htcdev.com/bootloader/unlock-instructions/page-2">here</a> (you will need to create an account).</li>
+<li>You will be sent an <code>Unlock_code.bin</code> by email. Then run <code>fastboot flash unlocktoken &lt;path_to_Unlock_code.bin&gt;</code>.</li>
+<li>Select Yes using the volume keys and the power button.</li>
+<li>The phone will restart with an unlocked bootloader.</li>
+</ul>
+</li>
+<li>
+<p>Enable USB debugging agagin.</p>
+</li>
+<li>
+<p>Install TWRP (a 'recovery' that is used for installing custom software). Download the .img from <a href="https://twrp.me/Devices/">here</a>.  </p>
+</li>
+</ol>
+<p>Go back to the bootloader: <code>adb reboot bootloader</code>.  </p>
+<p>Then run <code>fastboot flash recovery path_to_downloaded_twrp.img</code>.  </p>
+<p>Running <code>adb reboot recovery</code> will now open TWRP.</p>
+<ol>
+<li>
+<p>Find the <a href="http://get.cm/?device=m8&amp;type=snapshot">Cyanogenmod</a> version you would like (Latest Release is probably the recommended one to go for) and download it.</p>
+</li>
+<li>
+<p>Put it on your phone: <code>adb push path_to_cyanogenmod.zip /sdcard/</code></p>
+</li>
+<li>
+<p>Within TWRP, click install, then select the .zip you've just transferred. When you reboot your phone, it will now have Cyanogenomd on it. Yay!</p>
+</li>
+<li>
+<p>Cyanogenmod doesn't come with any Google apps. To install these (Gmail, Google Maps, Calendar etc etc), you'll need <a href="http://opengapps.org/">Open GApps</a>. Download the options you want (to avoid running out of memory, I would recommend the 'nano' variant which installs just the Play store, then you install the rest manually). Then run:</p>
+<div class="highlight"><pre><span></span>adb push path_to_gapps.zip /sdcard/
+</pre></div>
+
+
+</li>
+<li>
+<p>Then re-enable USB debugging (last time!) and go back into recovery mode (<code>adb reboot recovery</code>), hit Install, and now select the GApps .zip. </p>
+</li>
+<li>
+<p>You're all finished! Sit back and have a nice cuppa tea.</p>
+</li>
+</ol>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
