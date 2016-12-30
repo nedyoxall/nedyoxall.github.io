@@ -23,17 +23,17 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/handy_functions.html">Handy Functions</a></h1>
+                    <h1 class="entry-title"><a href="/what_do_star_and_double_star_mean.html">What do * (single star or asterisk) and ** (double star or asterisks) mean?</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2016-10-24T09:30:00+01:00">
-                Published: Mon 24 October 2016
+        <abbr class="published" title="2016-12-30T11:30:00+00:00">
+                Published: Fri 30 December 2016
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="/author/ned.html">Ned</a>
         </address>
 <p>In <a href="/category/data-science.html">Data Science</a>.</p>
-<p>tags: <a href="/tag/data-science.html">data science</a> <a href="/tag/python.html">python</a> <a href="/tag/handy-function.html">handy function</a> </p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/handy-function.html">handy function</a> </p>
 </footer><!-- /.post-info --><style type="text/css">/*!
 *
 * IPython notebook
@@ -1006,73 +1006,59 @@ h6:hover .anchor-link {
 
 .ansi-bold { font-weight: bold; }
 </style>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Both * and ** have several distinct uses in Python. The first - and perhaps the most common - is to allow you to pass an arbitrary number of arguments to a function. In other words, you use * and ** in this way when you are defining the function:</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">function1</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Average-per-day-when-you-have-monthly-sums">Average per day when you have monthly sums<a class="anchor-link" href="#Average-per-day-when-you-have-monthly-sums">&#182;</a></h2><p>Just occasionally I end up with dealing with data representing monthly sums (like sales in £ per month, or similar). To smooth out the fact that different months have different numbers of days, it can be handy to break this down into averages per day.</p>
-<p>Assuming you have a DateTimeIndex, this little function in combination with pandas <code>apply</code> method gets the job done:</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">avg_per_day_in_month</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">month</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">12</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="mi">31</span>
-    <span class="k">elif</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">month</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">11</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="mi">30</span>
-    <span class="k">elif</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">month</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">year</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="mi">29</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="mi">28</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calling function1 with just one argument:&quot;</span><span class="p">)</span>
+<span class="n">function1</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;And calling it with three arguments:&quot;</span><span class="p">)</span>
+<span class="n">function1</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Usage would be something like this:</p>
+<div class="output_wrapper">
+<div class="output">
 
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">grouped_by_month</span><span class="p">[</span><span class="s1">&#39;average_per_day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grouped_by_month</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">avg_per_day_in_month</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-</pre></div>
 
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Calling function1 with just one argument:
+(1,)
+And calling it with three arguments:
+(1, &#39;a&#39;, 10)
+</pre>
 </div>
+</div>
+
 </div>
 </div>
 
@@ -1082,17 +1068,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-to-feed-variables-into-a-function-within-agg/apply/transform-etc">How to feed variables into a function within agg/apply/transform etc<a class="anchor-link" href="#How-to-feed-variables-into-a-function-within-agg/apply/transform-etc">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Say you wanted to divide the minimum value in a group by a number. But you wanted flexibility about what that number should be... how do you do it?</p>
-<p>The answer is to feed a function within a function, like this:</p>
+<p>So the single star * returns a tuple... and the double star ** returns a dictionary:</p>
 
 </div>
 </div>
@@ -1102,13 +1078,40 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">divide_</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">/</span><span class="n">a</span>
-    <span class="k">return</span> <span class="n">divide_</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">function2</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calling function2 with arbitrary inputs:&quot;</span><span class="p">)</span>
+<span class="n">function2</span><span class="p">(</span><span class="n">test1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">test2</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Calling function2 with arbitrary inputs:
+{&#39;test2&#39;: 2, &#39;test1&#39;: 1}
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -1118,72 +1121,91 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>You would then use it as follows:</p>
+<p>Alternatively you can use the stars to input lists/dictionaries when the function would normally take plain, boring, single variables:</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;group_key&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;column_name&#39;</span><span class="p">:</span> <span class="n">divide</span><span class="p">(</span><span class="mi">3</span><span class="p">)})</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">function3</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Turning-categorical-variables-into-one-hot-columns">Turning categorical variables into one-hot columns<a class="anchor-link" href="#Turning-categorical-variables-into-one-hot-columns">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>I feel that this should be easier than it is (unless there is some new pandas wizardry that I'm not aware of). Either way, it's a common job to turn categorical columns into dummy columns. Scikit-learn, in particular, doesn't like strings, so you really need this if you've got categorical variables and you're using Python for machine learning!</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">create_dummy_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">list_of_cols</span><span class="p">,</span> <span class="n">drop_columns</span> <span class="o">=</span> <span class="bp">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to create dummy columns from the categorical variables</span>
-<span class="sd">    of an input dataframe.</span>
-<span class="sd">    The columns to dummify are specified as a list.</span>
-<span class="sd">    The original columns can be dropped by setting drop_columns = True.</span>
-<span class="sd">    </span>
-<span class="sd">    Inputs - df, the initial dataframe</span>
-<span class="sd">           - list_of_cols, the columns to drop as a list of strings</span>
-<span class="sd">           - drop_columns, whether to drop the categorical columns</span>
-<span class="sd">           </span>
-<span class="sd">    Returns - dummifed dataframe</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">df_copy</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">dummy_dfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">df_copy</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">list_of_cols</span><span class="p">:</span>
-        <span class="n">dummy_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df_copy</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
-        <span class="n">dummy_dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dummy_df</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">drop_columns</span><span class="p">:</span>
-            <span class="n">df_copy</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dummy_dfs</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Inputting one list to a function that takes two variables:&quot;</span><span class="p">)</span>
+<span class="n">function3</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Inputting one list to a function that takes two variables:
+1 2
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;But when your list is too long/short...&quot;</span><span class="p">)</span>
+<span class="n">function3</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>But when your list is too long/short...
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-7-f9b17dc6512e&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;But when your list is too long/short...&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>function3<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">TypeError</span>: function3() takes 2 positional arguments but 3 were given</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -1193,17 +1215,115 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Check that the shape of the input/output dataframes are as expected - I haven't yet tested this code!</p>
+<p>Rather predictably, you can use a dictionary to pass in a number of keyword arguments in one go with **:</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">function4</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;With no input:&quot;</span><span class="p">)</span>
+<span class="n">function4</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;With a dict input and some asterisks:&quot;</span><span class="p">)</span>
+<span class="n">function4</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">})</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>With no input:
+3 4
+With a dict input and some asterisks:
+1 2
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>But be careful - the dictionary keys must match the keyword arguments:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;With bad keys in the dictionary:&quot;</span><span class="p">)</span>
+<span class="n">function4</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">})</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>With bad keys in the dictionary:
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-10-9e90825a8f89&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;With bad keys in the dictionary:&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>function4<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">**</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">&#39;a&#39;</span><span class="ansi-blue-fg">:</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;b&#39;</span><span class="ansi-blue-fg">:</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">TypeError</span>: function4() got an unexpected keyword argument &#39;b&#39;</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
 </div>
@@ -1244,6 +1364,30 @@ h6:hover .anchor-link {
                     <h1>Other articles</h1>
                     <hr />
                     <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/handy_functions.html" rel="bookmark"
+                           title="Permalink to Handy Functions">Handy Functions</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-10-24T09:30:00+01:00">
+                Published: Mon 24 October 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/ned.html">Ned</a>
+        </address>
+<p>In <a href="/category/data-science.html">Data Science</a>.</p>
+<p>tags: <a href="/tag/data-science.html">data science</a> <a href="/tag/python.html">python</a> <a href="/tag/handy-function.html">handy function</a> </p>
+</footer><!-- /.post-info -->                
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+                <a class="readmore" href="/handy_functions.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
