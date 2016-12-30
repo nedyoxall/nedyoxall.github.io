@@ -23,17 +23,17 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/what_do_star_and_double_star_mean.html">What do * (single star or asterisk) and ** (double star or asterisks) mean?</a></h1>
+                    <h1 class="entry-title"><a href="/tracing_classes_and_methods_called_from_notebook.html">How to trace what files, classes and functions are being used from within a Jupyter notebook?</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2016-12-30T11:30:00+00:00">
+        <abbr class="published" title="2016-12-30T12:00:00+00:00">
                 Published: Fri 30 December 2016
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="/author/ned.html">Ned</a>
         </address>
-<p>In <a href="/category/data-science.html">Data Science</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/handy-function.html">handy function</a> </p>
+<p>In <a href="/category/coding.html">Coding</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
 </footer><!-- /.post-info --><style type="text/css">/*!
 *
 * IPython notebook
@@ -1006,59 +1006,77 @@ h6:hover .anchor-link {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Both * and ** have several distinct uses in Python. The first - and perhaps the most common - is to allow you to pass an arbitrary number of arguments to a function. In other words, you use * and ** in this way when you are defining the function:</p>
-
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">function1</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> 
-    <span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">dedupe</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Sometimes you want to know what functions are being called - for example when you're trying to figure out how a complex package works. Fortunately, Python makes this pretty easy - the <code>sys</code> package contains a <code>settrace</code> method that allows you to do just that. Unfortunately, it's a bit eager, and doesn't work particularly well in a notebook environment without a bit of tweaking. That's because <code>settrace</code> will tell you <em>all</em> the functions that are called - even those that are just to do with executing code from the notebook itself.</p>
+<p>So... I wrote a function that seems to handle all that faff pretty well. Here it is:</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calling function1 with just one argument:&quot;</span><span class="p">)</span>
-<span class="n">function1</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;And calling it with three arguments:&quot;</span><span class="p">)</span>
-<span class="n">function1</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">tracefunc</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">package_name</span><span class="o">=</span><span class="s1">&#39;dedupe&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Function to track the methods, classes and filenames that are called from Jupyter notebook.</span>
+<span class="sd">        Will need some tweaking for use outside of notebook environment.</span>
+<span class="sd">        Useful for tracing what functions have been used in complex packages.</span>
+<span class="sd">        Inspired by: http://stackoverflow.com/questions/8315389/how-do-i-print-functions-as-they-are-called</span>
+<span class="sd">        </span>
+<span class="sd">        Inputs: - frame, event, arg -&gt; See the docs: https://docs.python.org/3/library/sys.html#sys.settrace</span>
+<span class="sd">                - package_name -&gt; string of the package you want to track</span>
+<span class="sd">                                  (without this get a load of notebook faff printed out too)</span>
+<span class="sd">        </span>
+<span class="sd">        Outputs: - prints to screen the filename, class and methods called by running cell.</span>
+<span class="sd">        </span>
+<span class="sd">        Usage: Turn on -&gt; sys.settrace(tracefunc)</span>
+<span class="sd">               Turn off -&gt; sys.settrace(None)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">file_name</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_filename</span>
+    <span class="n">func_name</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span>
+    
+    <span class="c1"># this is a bit of a hack to get the class out of the locals</span>
+    <span class="c1"># - it relies on &#39;self&#39; being used... normally a safe assumption!</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">class_name</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_locals</span><span class="p">[</span><span class="s1">&#39;self&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span> 
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+        <span class="n">class_name</span> <span class="o">=</span> <span class="s2">&quot;No Class&quot;</span>
+                  
+    <span class="c1"># notebook filenames appear as &#39;ipython-input...&#39;</span>
+    <span class="k">if</span> <span class="s1">&#39;ipython-input&#39;</span> <span class="ow">in</span> <span class="n">file_name</span> <span class="ow">or</span> <span class="n">package_name</span> <span class="ow">in</span> <span class="n">file_name</span><span class="p">:</span>
+        <span class="c1"># another thing that appears to be specific to notebooks</span>
+        <span class="k">if</span> <span class="s1">&#39;&lt;module&gt;&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">func_name</span><span class="p">:</span>
+            <span class="c1"># this is where the work gets done!</span>
+            <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="s2">&quot;call&quot;</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Filename: &quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span> <span class="o">+</span> \
+                      <span class="s2">&quot; -&gt; Class: &quot;</span> <span class="o">+</span> <span class="n">class_name</span> <span class="o">+</span> \
+                      <span class="s2">&quot; -&gt; Function: &quot;</span> <span class="o">+</span> <span class="n">func_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tracefunc</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Calling function1 with just one argument:
-(1,)
-And calling it with three arguments:
-(1, &#39;a&#39;, 10)
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -1068,7 +1086,7 @@ And calling it with three arguments:
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>So the single star * returns a tuple... and the double star ** returns a dictionary:</p>
+<p>To show <code>settrace</code> in action, here's a toy class I created:</p>
 
 </div>
 </div>
@@ -1078,40 +1096,16 @@ And calling it with three arguments:
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">function2</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">class</span> <span class="nc">foo</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;got here&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">5</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calling function2 with arbitrary inputs:&quot;</span><span class="p">)</span>
-<span class="n">function2</span><span class="p">(</span><span class="n">test1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">test2</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Calling function2 with arbitrary inputs:
-{&#39;test2&#39;: 2, &#39;test1&#39;: 1}
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -1121,7 +1115,30 @@ And calling it with three arguments:
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Alternatively you can use the stars to input lists/dictionaries when the function would normally take plain, boring, single variables:</p>
+<p>You use it as follows - first turn it on via:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">sys</span><span class="o">.</span><span class="n">settrace</span><span class="p">(</span><span class="n">tracefunc</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I now call the foo class (and its bar method) from a notebook cell:</p>
 
 </div>
 </div>
@@ -1131,22 +1148,8 @@ And calling it with three arguments:
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">function3</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Inputting one list to a function that takes two variables:&quot;</span><span class="p">)</span>
-<span class="n">function3</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">foo</span><span class="p">()</span>
+<span class="n">f</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -1159,12 +1162,41 @@ And calling it with three arguments:
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Inputting one list to a function that takes two variables:
-1 2
+<pre>Filename: &lt;ipython-input-3-72f85d199f0d&gt; -&gt; Class: foo -&gt; Function: __init__
+got here
+Filename: &lt;ipython-input-3-72f85d199f0d&gt; -&gt; Class: foo -&gt; Function: bar
 </pre>
 </div>
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>... and you get a print out of what is being called.</p>
+<p>For something more complex I'm using <code>dedupe</code>, which is a cracking package for entity resolution in Python. First you define the fields which you care about, then you feed that into the <code>Dedupe</code> class, which runs off and does a load of initialisations - <code>settrace</code> follows these:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">fields</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;field&#39;</span> <span class="p">:</span> <span class="s1">&#39;family_name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span> <span class="p">:</span> <span class="s1">&#39;String&#39;</span><span class="p">},</span>
+          <span class="p">{</span><span class="s1">&#39;field&#39;</span> <span class="p">:</span> <span class="s1">&#39;given_name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;String&#39;</span><span class="p">},</span> 
+          <span class="p">{</span><span class="s1">&#39;field&#39;</span> <span class="p">:</span> <span class="s1">&#39;middle_name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;String&#39;</span><span class="p">,</span> <span class="s1">&#39;has_missing&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">},</span>
+          <span class="p">{</span><span class="s1">&#39;field&#39;</span> <span class="p">:</span> <span class="s1">&#39;dob_year&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;String&#39;</span><span class="p">,</span> <span class="s1">&#39;has_missing&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">},</span>
+          <span class="p">{</span><span class="s1">&#39;field&#39;</span> <span class="p">:</span> <span class="s1">&#39;dob_month&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;String&#39;</span><span class="p">,</span> <span class="s1">&#39;has_missing&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">}]</span>
+</pre></div>
+
+</div>
 </div>
 </div>
 
@@ -1174,8 +1206,7 @@ And calling it with three arguments:
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;But when your list is too long/short...&quot;</span><span class="p">)</span>
-<span class="n">function3</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">deduper</span> <span class="o">=</span> <span class="n">dedupe</span><span class="o">.</span><span class="n">Dedupe</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1188,21 +1219,321 @@ And calling it with three arguments:
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>But when your list is too long/short...
+<pre>Filename: api.py -&gt; Class: Dedupe -&gt; Function: __init__
+Filename: api.py -&gt; Class: Dedupe -&gt; Function: __init__
+Filename: datamodel.py -&gt; Class: DataModel -&gt; Function: __init__
+Filename: datamodel.py -&gt; Class: No Class -&gt; Function: typifyFields
+Filename: string.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: string.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: No Class -&gt; Function: indexPredicates
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: No Class -&gt; Function: indexPredicates
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: string.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: string.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: No Class -&gt; Function: indexPredicates
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: No Class -&gt; Function: indexPredicates
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: string.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: string.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: No Class -&gt; Function: indexPredicates
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: No Class -&gt; Function: indexPredicates
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: string.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: string.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: No Class -&gt; Function: indexPredicates
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: No Class -&gt; Function: indexPredicates
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: string.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: string.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: StringPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: No Class -&gt; Function: indexPredicates
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfNGramSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: TfidfTextSearchPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: No Class -&gt; Function: indexPredicates
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinCanopyPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: predicates.py -&gt; Class: LevenshteinSearchPredicate -&gt; Function: __init__
+Filename: base.py -&gt; Class: StringType -&gt; Function: __init__
+Filename: datamodel.py -&gt; Class: No Class -&gt; Function: interactions
+Filename: datamodel.py -&gt; Class: No Class -&gt; Function: &lt;dictcomp&gt;
+Filename: datamodel.py -&gt; Class: No Class -&gt; Function: missing
+Filename: datamodel.py -&gt; Class: No Class -&gt; Function: missing_field_indices
+Filename: datamodel.py -&gt; Class: No Class -&gt; Function: interaction_indices
 </pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-7-f9b17dc6512e&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;But when your list is too long/short...&#34;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>function3<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">TypeError</span>: function3() takes 2 positional arguments but 3 were given</pre>
 </div>
 </div>
 
@@ -1215,7 +1546,7 @@ And calling it with three arguments:
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Rather predictably, you can use a dictionary to pass in a number of keyword arguments in one go with **:</p>
+<p>Et voila, that's about it. To turn off the tracing, just run:</p>
 
 </div>
 </div>
@@ -1225,105 +1556,7 @@ And calling it with three arguments:
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">function4</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;With no input:&quot;</span><span class="p">)</span>
-<span class="n">function4</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;With a dict input and some asterisks:&quot;</span><span class="p">)</span>
-<span class="n">function4</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">})</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>With no input:
-3 4
-With a dict input and some asterisks:
-1 2
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>But be careful - the dictionary keys must match the keyword arguments:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;With bad keys in the dictionary:&quot;</span><span class="p">)</span>
-<span class="n">function4</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">})</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>With bad keys in the dictionary:
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-10-9e90825a8f89&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;With bad keys in the dictionary:&#34;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>function4<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">**</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">&#39;a&#39;</span><span class="ansi-blue-fg">:</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;b&#39;</span><span class="ansi-blue-fg">:</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">TypeError</span>: function4() got an unexpected keyword argument &#39;b&#39;</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">sys</span><span class="o">.</span><span class="n">settrace</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1364,6 +1597,34 @@ With a dict input and some asterisks:
                     <h1>Other articles</h1>
                     <hr />
                     <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/what_do_star_and_double_star_mean.html" rel="bookmark"
+                           title="Permalink to What do * (single star or asterisk) and ** (double star or asterisks) mean?">What do * (single star or asterisk) and ** (double star or asterisks) mean?</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-12-30T11:30:00+00:00">
+                Published: Fri 30 December 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/ned.html">Ned</a>
+        </address>
+<p>In <a href="/category/coding.html">Coding</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Both * and ** have several distinct uses in Python. The first - and perhaps the most common - is to allow you to pass an arbitrary number of arguments to a function. In other words, you use * and ** in this way when you are defining the function:</p>
+                <a class="readmore" href="/what_do_star_and_double_star_mean.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
