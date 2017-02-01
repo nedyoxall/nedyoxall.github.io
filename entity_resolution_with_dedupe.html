@@ -1016,7 +1016,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">dedupe</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">dedupe</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -1025,8 +1025,8 @@ h6:hover .anchor-link {
 <span class="kn">import</span> <span class="nn">locale</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">multiprocessing</span>
-<span class="kn">import</span> <span class="nn">sqlite3</span> <span class="k">as</span> <span class="nn">lite</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span> <span class="kn">as</span> <span class="nn">lite</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">unicodedata</span>
 <span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -1053,7 +1053,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../data/companies-with-controlling-entities v6.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../data/companies-with-controlling-entities v6.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1081,7 +1081,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1200,7 +1200,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO - trim left and right of name for spaces? </span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO - trim left and right of name for spaces? </span>
 <span class="c1"># TODO - check that the index is unique, or will cause problems at a later date!</span>
 </pre></div>
 
@@ -1229,7 +1229,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">to_dedupe</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="s1">&#39;family_name&#39;</span><span class="p">,</span> <span class="s1">&#39;given_name&#39;</span><span class="p">,</span> <span class="s1">&#39;middle_name&#39;</span><span class="p">,</span> <span class="s1">&#39;dob_year&#39;</span><span class="p">,</span> <span class="s1">&#39;dob_month&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">to_dedupe</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="s1">&#39;family_name&#39;</span><span class="p">,</span> <span class="s1">&#39;given_name&#39;</span><span class="p">,</span> <span class="s1">&#39;middle_name&#39;</span><span class="p">,</span> <span class="s1">&#39;dob_year&#39;</span><span class="p">,</span> <span class="s1">&#39;dob_month&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -1242,8 +1242,8 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Some utility functions for getting dataframes ready for deduping</span>
-<span class="k">def</span> <span class="nf">remove_nulls_from_these_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Some utility functions for getting dataframes ready for deduping</span>
+<span class="k">def</span> <span class="nf">remove_nulls_from_these_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Utility function to remove nulls from the specified columns of a dataframe.</span>
 <span class="sd">        </span>
 <span class="sd">        Inputs: - df -&gt; dataframe to remove nulls from</span>
@@ -1252,12 +1252,12 @@ h6:hover .anchor-link {
 <span class="sd">        Outputs: - new dataframe without nulls</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of rows before removing nulls: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Number of rows before removing nulls: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)))</span>
     <span class="n">to_remove</span> <span class="o">=</span> <span class="n">df</span>
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
         <span class="n">no_null</span> <span class="o">=</span> <span class="n">to_remove</span><span class="p">[</span><span class="n">to_remove</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of rows after removing &quot;</span> <span class="o">+</span> <span class="n">col</span> <span class="o">+</span> <span class="s2">&quot;: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">no_null</span><span class="p">)))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Number of rows after removing &quot;</span> <span class="o">+</span> <span class="n">col</span> <span class="o">+</span> <span class="s2">&quot;: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">no_null</span><span class="p">)))</span>
         <span class="n">to_remove</span> <span class="o">=</span> <span class="n">no_null</span>
         
     <span class="k">return</span> <span class="n">no_null</span>
@@ -1272,10 +1272,10 @@ h6:hover .anchor-link {
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">new_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="n">new_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">new_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">new_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">new_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span> <span class="bp">None</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">new_df</span>
 
-<span class="k">def</span> <span class="nf">convert_numbers_to_strings</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cols_to_convert</span><span class="p">,</span> <span class="n">remove_point_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">convert_numbers_to_strings</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cols_to_convert</span><span class="p">,</span> <span class="n">remove_point_zero</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Convert number types to strings in a dataframe.</span>
 <span class="sd">        This is convoluted as need to keep NoneTypes as NoneTypes for what comes next!</span>
 <span class="sd">        </span>
@@ -1289,10 +1289,10 @@ h6:hover .anchor-link {
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols_to_convert</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">remove_point_zero</span><span class="p">:</span>
             <span class="n">new_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.0&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>\
-                                            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
+                                            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">None</span><span class="p">))</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>\
-                                            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
+                                            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">None</span><span class="p">))</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">new_df</span>
 </pre></div>
 
@@ -1306,7 +1306,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">to_dedupe</span> <span class="o">=</span> <span class="n">remove_nulls_from_these_columns</span><span class="p">(</span><span class="n">to_dedupe</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;family_name&#39;</span><span class="p">,</span><span class="s1">&#39;given_name&#39;</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">to_dedupe</span> <span class="o">=</span> <span class="n">remove_nulls_from_these_columns</span><span class="p">(</span><span class="n">to_dedupe</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;family_name&#39;</span><span class="p">,</span><span class="s1">&#39;given_name&#39;</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="n">to_dedupe</span> <span class="o">=</span> <span class="n">fill_nulls_with_none</span><span class="p">(</span><span class="n">to_dedupe</span><span class="p">)</span>
 <span class="n">to_dedupe</span> <span class="o">=</span> <span class="n">convert_numbers_to_strings</span><span class="p">(</span><span class="n">to_dedupe</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;dob_year&#39;</span><span class="p">,</span><span class="s1">&#39;dob_month&#39;</span><span class="p">])</span>
 </pre></div>
@@ -1337,7 +1337,7 @@ Number of rows after removing given_name: 706151
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">to_dedupe</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">to_dedupe</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -1430,7 +1430,7 @@ Number of rows after removing given_name: 706151
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">to_dedupe_dict</span> <span class="o">=</span> <span class="n">to_dedupe</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span> <span class="o">=</span> <span class="s1">&#39;index&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">to_dedupe_dict</span> <span class="o">=</span> <span class="n">to_dedupe</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span> <span class="o">=</span> <span class="s1">&#39;index&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1453,7 +1453,7 @@ Number of rows after removing given_name: 706151
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">to_dedupe_dict</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">to_dedupe_dict</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -1496,7 +1496,7 @@ Number of rows after removing given_name: 706151
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;to_dedupe_dict.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;to_dedupe_dict.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">to_dedupe_dict</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 </pre></div>
 
@@ -1510,7 +1510,7 @@ Number of rows after removing given_name: 706151
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;to_dedupe_dict.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;to_dedupe_dict.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">to_dedupe_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 </pre></div>
 
@@ -1534,12 +1534,12 @@ Number of rows after removing given_name: 706151
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># docs for this are here: </span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># docs for this are here: </span>
 <span class="n">fields</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;field&#39;</span> <span class="p">:</span> <span class="s1">&#39;family_name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span> <span class="p">:</span> <span class="s1">&#39;String&#39;</span><span class="p">},</span>
           <span class="p">{</span><span class="s1">&#39;field&#39;</span> <span class="p">:</span> <span class="s1">&#39;given_name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;String&#39;</span><span class="p">},</span> 
-          <span class="p">{</span><span class="s1">&#39;field&#39;</span> <span class="p">:</span> <span class="s1">&#39;middle_name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;String&#39;</span><span class="p">,</span> <span class="s1">&#39;has_missing&#39;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
-          <span class="p">{</span><span class="s1">&#39;field&#39;</span> <span class="p">:</span> <span class="s1">&#39;dob_year&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;String&#39;</span><span class="p">,</span> <span class="s1">&#39;has_missing&#39;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
-          <span class="p">{</span><span class="s1">&#39;field&#39;</span> <span class="p">:</span> <span class="s1">&#39;dob_month&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;String&#39;</span><span class="p">,</span> <span class="s1">&#39;has_missing&#39;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">}]</span>
+          <span class="p">{</span><span class="s1">&#39;field&#39;</span> <span class="p">:</span> <span class="s1">&#39;middle_name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;String&#39;</span><span class="p">,</span> <span class="s1">&#39;has_missing&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">},</span>
+          <span class="p">{</span><span class="s1">&#39;field&#39;</span> <span class="p">:</span> <span class="s1">&#39;dob_year&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;String&#39;</span><span class="p">,</span> <span class="s1">&#39;has_missing&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">},</span>
+          <span class="p">{</span><span class="s1">&#39;field&#39;</span> <span class="p">:</span> <span class="s1">&#39;dob_month&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;String&#39;</span><span class="p">,</span> <span class="s1">&#39;has_missing&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">}]</span>
 </pre></div>
 
 </div>
@@ -1552,7 +1552,7 @@ Number of rows after removing given_name: 706151
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># There is a bug later on that requires num_cores to be 1, but we can make use of</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># There is a bug later on that requires num_cores to be 1, but we can make use of</span>
 <span class="c1"># multi-threaded processes in the meantime</span>
 <span class="n">deduper</span> <span class="o">=</span> <span class="n">dedupe</span><span class="o">.</span><span class="n">Dedupe</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
@@ -1577,7 +1577,7 @@ Number of rows after removing given_name: 706151
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">deduper</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">to_dedupe_dict</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">deduper</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">to_dedupe_dict</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1600,13 +1600,13 @@ Number of rows after removing given_name: 706151
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">training_file</span> <span class="o">=</span> <span class="s1">&#39;controlling_entities_dedupe_training.json&#39;</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">training_file</span> <span class="o">=</span> <span class="s1">&#39;controlling_entities_dedupe_training.json&#39;</span>
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">training_file</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reading labeled examples from &#39;</span><span class="p">,</span> <span class="n">training_file</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;reading labeled examples from &#39;</span><span class="p">,</span> <span class="n">training_file</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">training_file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tf</span><span class="p">:</span>
         <span class="n">deduper</span><span class="o">.</span><span class="n">readTraining</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;no training file found - will create new one: &#39;</span> <span class="o">+</span> <span class="n">training_file</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;no training file found - will create new one: &#39;</span> <span class="o">+</span> <span class="n">training_file</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1640,7 +1640,7 @@ Number of rows after removing given_name: 706151
 <div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dedupe</span><span class="o">.</span><span class="n">convenience</span><span class="o">.</span><span class="n">consoleLabel</span><span class="p">(</span><span class="n">deduper</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">dedupe</span><span class="o">.</span><span class="n">convenience</span><span class="o">.</span><span class="n">consoleLabel</span><span class="p">(</span><span class="n">deduper</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2741,7 +2741,7 @@ Do these records refer to the same thing?
 <div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># learn both the classifier and blocking rules</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># learn both the classifier and blocking rules</span>
 <span class="c1"># max_comparisons seems to be SUPER important in finding good predicates</span>
 <span class="n">deduper</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">recall</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">maximum_comparisons</span><span class="o">=</span><span class="mi">1000000000</span><span class="p">)</span>
 </pre></div>
@@ -2908,7 +2908,7 @@ INFO:dedupe.training:(SimplePredicate: (fingerprint, family_name), TfidfNGramCan
 <div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">record_pairs</span> <span class="o">=</span> <span class="p">((</span><span class="n">to_dedupe_dict</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">to_dedupe_dict</span><span class="p">[</span><span class="mi">1</span><span class="p">]),)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">record_pairs</span> <span class="o">=</span> <span class="p">((</span><span class="n">to_dedupe_dict</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">to_dedupe_dict</span><span class="p">[</span><span class="mi">1</span><span class="p">]),)</span>
 </pre></div>
 
 </div>
@@ -2931,7 +2931,7 @@ INFO:dedupe.training:(SimplePredicate: (fingerprint, family_name), TfidfNGramCan
 <div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">deduper</span><span class="o">.</span><span class="n">data_model</span><span class="o">.</span><span class="n">_field_comparators</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">deduper</span><span class="o">.</span><span class="n">data_model</span><span class="o">.</span><span class="n">_field_comparators</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2968,7 +2968,7 @@ INFO:dedupe.training:(SimplePredicate: (fingerprint, family_name), TfidfNGramCan
 <div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">deduper</span><span class="o">.</span><span class="n">data_model</span><span class="o">.</span><span class="n">distances</span><span class="p">(</span><span class="n">record_pairs</span><span class="o">=</span><span class="n">record_pairs</span><span class="p">))</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">deduper</span><span class="o">.</span><span class="n">data_model</span><span class="o">.</span><span class="n">distances</span><span class="p">(</span><span class="n">record_pairs</span><span class="o">=</span><span class="n">record_pairs</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -3005,7 +3005,7 @@ INFO:dedupe.training:(SimplePredicate: (fingerprint, family_name), TfidfNGramCan
 <div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">deduper</span><span class="o">.</span><span class="n">classifier</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">deduper</span><span class="o">.</span><span class="n">classifier</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3042,7 +3042,7 @@ INFO:dedupe.training:(SimplePredicate: (fingerprint, family_name), TfidfNGramCan
 <div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">settings_file</span> <span class="o">=</span> <span class="s1">&#39;dedupe_settings&#39;</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">settings_file</span> <span class="o">=</span> <span class="s1">&#39;dedupe_settings&#39;</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">settings_file</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">deduper</span><span class="o">.</span><span class="n">writeSettings</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">training_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -3071,7 +3071,7 @@ INFO:dedupe.training:(SimplePredicate: (fingerprint, family_name), TfidfNGramCan
 <div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">deduper</span><span class="o">.</span><span class="n">blocker</span><span class="o">.</span><span class="n">predicates</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">deduper</span><span class="o">.</span><span class="n">blocker</span><span class="o">.</span><span class="n">predicates</span>
 </pre></div>
 
 </div>
@@ -3121,8 +3121,8 @@ INFO:dedupe.training:(SimplePredicate: (fingerprint, family_name), TfidfNGramCan
 <div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">deduper</span><span class="o">.</span><span class="n">blocker</span><span class="o">.</span><span class="n">index_fields</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">deduper</span><span class="o">.</span><span class="n">blocker</span><span class="o">.</span><span class="n">index_fields</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3161,7 +3161,7 @@ family_name
 <div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">deduper</span><span class="o">.</span><span class="n">cleanupTraining</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">deduper</span><span class="o">.</span><span class="n">cleanupTraining</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -3184,9 +3184,9 @@ family_name
 <div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">database_name</span> <span class="o">=</span> <span class="s1">&#39;controlling_entities_dedupe_database.db&#39;</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">database_name</span> <span class="o">=</span> <span class="s1">&#39;controlling_entities_dedupe_database.db&#39;</span>
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">database_name</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;database &#39;</span><span class="si">{}</span><span class="s2">&#39; already exists. deleting it and starting from scratch!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">database_name</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;database &#39;{}&#39; already exists. deleting it and starting from scratch!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">database_name</span><span class="p">))</span>
     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">database_name</span><span class="p">)</span>
 
 <span class="n">conn</span> <span class="o">=</span> <span class="n">lite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">database_name</span><span class="p">)</span>
@@ -3226,7 +3226,7 @@ family_name
 <div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">to_dedupe</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">to_dedupe</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -3319,9 +3319,9 @@ family_name
 <div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">c1</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c1</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 <span class="n">c1</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS actual_data&quot;</span><span class="p">)</span>
-<span class="n">to_dedupe</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="s1">&#39;actual_data&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">if_exists</span><span class="o">=</span><span class="s1">&#39;fail&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">index_label</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
+<span class="n">to_dedupe</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="s1">&#39;actual_data&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">if_exists</span><span class="o">=</span><span class="s1">&#39;fail&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">index_label</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
 <span class="n">c1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 
@@ -3345,7 +3345,7 @@ family_name
 <div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># A dictionary of the Index Predicates that will used for blocking. </span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># A dictionary of the Index Predicates that will used for blocking. </span>
 <span class="c1"># The keys are the fields the predicates will operate on.</span>
 <span class="n">deduper</span><span class="o">.</span><span class="n">blocker</span><span class="o">.</span><span class="n">index_fields</span>
 </pre></div>
@@ -3383,12 +3383,12 @@ family_name
 <div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># this does not add an index if there are no canopy predicates in the index_fields</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># this does not add an index if there are no canopy predicates in the index_fields</span>
 <span class="n">c3</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">deduper</span><span class="o">.</span><span class="n">blocker</span><span class="o">.</span><span class="n">index_fields</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;creating inverted index on: &#39;</span> <span class="o">+</span> <span class="n">field</span><span class="p">)</span>
-    <span class="n">c3</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT DISTINCT </span><span class="si">{field}</span><span class="s2"> FROM actual_data &quot;</span>
-               <span class="s2">&quot;WHERE </span><span class="si">{field}</span><span class="s2"> IS NOT NULL&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;creating inverted index on: &#39;</span> <span class="o">+</span> <span class="n">field</span><span class="p">)</span>
+    <span class="n">c3</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT DISTINCT {field} FROM actual_data &quot;</span>
+               <span class="s2">&quot;WHERE {field} IS NOT NULL&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="p">))</span>
     <span class="n">field_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">c3</span><span class="p">)</span>
     <span class="c1"># Indexes the data from a field for use in an index predicate/canopy</span>
     <span class="c1"># This goes through row-by-row</span>
@@ -3467,7 +3467,7 @@ INFO:dedupe.blocking:Canopy: TfidfTextCanopyPredicate: (0.8, middle_name)
 <div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">c2</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c2</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 <span class="n">c2</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS blocking_map&quot;</span><span class="p">)</span>
 <span class="n">c2</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE blocking_map &quot;</span>
           <span class="s2">&quot;(block_key VARCHAR(200), id INTEGER) &quot;</span><span class="p">)</span>
@@ -3484,11 +3484,11 @@ INFO:dedupe.blocking:Canopy: TfidfTextCanopyPredicate: (0.8, middle_name)
 <div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">SELECT_STATEMENT</span> <span class="o">=</span> <span class="s2">&quot;SELECT id, family_name, given_name, middle_name, &quot;</span> \
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">SELECT_STATEMENT</span> <span class="o">=</span> <span class="s2">&quot;SELECT id, family_name, given_name, middle_name, &quot;</span> \
                    <span class="s2">&quot;dob_year, dob_month FROM actual_data&quot;</span>
 
 <span class="n">c4</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;writing blocking map&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;writing blocking map&#39;</span><span class="p">)</span>
 <span class="n">c4</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">SELECT_STATEMENT</span><span class="p">)</span>
 <span class="c1"># the data should be fed to the blocker as an iterable of the form:</span>
 <span class="c1"># data = [(1, {&#39;name&#39; : &#39;bob&#39;}), (2, {&#39;name&#39; : &#39;suzanne&#39;}), ... ]</span>
@@ -3528,11 +3528,11 @@ INFO:dedupe.blocking:Canopy: TfidfTextCanopyPredicate: (0.8, middle_name)
 <div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># b_data is a generator so will yield output as looped over</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># b_data is a generator so will yield output as looped over</span>
 <span class="n">c5</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">b_data</span><span class="p">:</span>
-    <span class="n">c5</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO blocking_map (block_key, id) VALUES (&#39;</span><span class="si">{block_key}</span><span class="s2">&#39;,</span><span class="si">{id}</span><span class="s2">)&quot;</span><span class="o">.</span>\
-               <span class="nb">format</span><span class="p">(</span><span class="n">block_key</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="nb">id</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">c5</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO blocking_map (block_key, id) VALUES (&#39;{block_key}&#39;,{id})&quot;</span><span class="o">.</span>\
+               <span class="n">format</span><span class="p">(</span><span class="n">block_key</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="nb">id</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 <span class="n">c5</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="n">c4</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
@@ -3641,7 +3641,7 @@ INFO:dedupe.blocking:700000, 50.6131992 seconds
 <div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># How well has the blocking worked? check that there are not loads of blocks with single counts</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># How well has the blocking worked? check that there are not loads of blocks with single counts</span>
 <span class="n">blocking_map_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM blocking_map&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
 <span class="n">blocking_map_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -3709,7 +3709,7 @@ INFO:dedupe.blocking:700000, 50.6131992 seconds
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Conceptually, you can think of the blocks/canopies as looking something like this (note that you end up with this situation for each Predicate dedupe finds):</p>
-<p><img src="../diagrams/blocking_map.png" ,width="400,height=400," style="float: left;"></p>
+<p><img src="./diagrams/blocking_map.png" ,width="400,height=400," style="float: left;"></p>
 
 </div>
 </div>
@@ -3729,7 +3729,7 @@ INFO:dedupe.blocking:700000, 50.6131992 seconds
 <div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">blocking_map_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;block_key&#39;</span><span class="p">)[</span><span class="s1">&#39;block_key&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">blocking_map_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;block_key&#39;</span><span class="p">)[</span><span class="s1">&#39;block_key&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3780,8 +3780,8 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">blocking_map_df</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">to_dedupe</span><span class="p">))</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">blocking_map_df</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">to_dedupe</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -3819,7 +3819,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">blocking_map_df</span><span class="p">,</span> <span class="n">to_dedupe</span><span class="p">,</span> <span class="n">left_on</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">right_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">blocking_map_df</span><span class="p">,</span> <span class="n">to_dedupe</span><span class="p">,</span> <span class="n">left_on</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">right_index</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -3832,7 +3832,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;block_key&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;block_key&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -3927,7 +3927,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="o">.</span><span class="n">family_name</span> <span class="o">==</span> <span class="s1">&#39;Loch&#39;</span><span class="p">]</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="o">.</span><span class="n">family_name</span> <span class="o">==</span> <span class="s1">&#39;Loch&#39;</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -4042,7 +4042,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;indexing block_key&quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE INDEX blocking_map_key_idx ON blocking_map (block_key)&quot;</span><span class="p">)</span>
 </pre></div>
@@ -4080,7 +4080,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[44]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">deduper</span><span class="o">.</span><span class="n">blocker</span><span class="o">.</span><span class="n">resetIndices</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">deduper</span><span class="o">.</span><span class="n">blocker</span><span class="o">.</span><span class="n">resetIndices</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -4114,7 +4114,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS plural_key&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS plural_key&quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS plural_block&quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS covered_blocks&quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS smaller_coverage&quot;</span><span class="p">)</span>
@@ -4156,7 +4156,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[46]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;calculating plural_key&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;calculating plural_key&quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot; DROP TABLE IF EXISTS plural_key&quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE plural_key &quot;</span>
           <span class="s2">&quot;(block_key VARCHAR(200), &quot;</span>
@@ -4196,7 +4196,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[47]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot; INSERT INTO plural_key (block_key) &quot;</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot; INSERT INTO plural_key (block_key) &quot;</span>
           <span class="s2">&quot; SELECT MIN(block_key) FROM &quot;</span>
           <span class="s2">&quot;    (SELECT block_key, GROUP_CONCAT(id) AS block FROM &quot;</span>
           <span class="s2">&quot;       (SELECT block_key, id FROM blocking_map ORDER BY block_key, id) AS a &quot;</span>
@@ -4241,7 +4241,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[48]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plural_key_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM plural_key&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">plural_key_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM plural_key&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
 <span class="n">plural_key_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -4317,7 +4317,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[49]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">plural_key_df</span><span class="p">))</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">plural_key_df</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -4354,11 +4354,11 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[50]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">try</span><span class="p">:</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">plural_key_df</span><span class="p">[</span><span class="n">plural_key_df</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)])</span> <span class="o">==</span> <span class="mi">0</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;no duplicated rows in plural_key&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">plural_key_df</span><span class="p">[</span><span class="n">plural_key_df</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)])</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;no duplicated rows in plural_key&quot;</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;somehow duplicated rows have crept into plural_key - fix before continuing!!&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;somehow duplicated rows have crept into plural_key - fix before continuing!!&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -4395,7 +4395,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[51]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;creating block_key index&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;creating block_key index&quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE UNIQUE INDEX block_key_idx ON plural_key (block_key)&quot;</span><span class="p">)</span>
 </pre></div>
 
@@ -4442,7 +4442,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[52]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;calculating plural_block&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;calculating plural_block&quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot; DROP TABLE IF EXISTS plural_block &quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot; CREATE TABLE plural_block AS &quot;</span>
           <span class="s2">&quot; SELECT block_id, id &quot;</span>
@@ -4485,7 +4485,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plural_block_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM plural_block&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">plural_block_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM plural_block&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
 <span class="n">plural_block_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -4551,7 +4551,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[54]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">plural_block_df</span><span class="p">))</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">plural_block_df</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -4578,11 +4578,11 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[55]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">try</span><span class="p">:</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">plural_block_df</span><span class="p">[</span><span class="n">plural_block_df</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)])</span> <span class="o">==</span> <span class="mi">0</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;no duplicated rows in plural_block&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">plural_block_df</span><span class="p">[</span><span class="n">plural_block_df</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)])</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;no duplicated rows in plural_block&quot;</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;somehow duplicated rows have crept into plural_block - fix before continuing!!&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;somehow duplicated rows have crept into plural_block - fix before continuing!!&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -4609,7 +4609,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[56]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;adding id index and sorting index&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;adding id index and sorting index&quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE INDEX plural_block_id_idx ON plural_block (id)&quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE UNIQUE INDEX plural_block_block_id_id_uniq &quot;</span>
           <span class="s2">&quot; ON plural_block (block_id, id)&quot;</span><span class="p">)</span>
@@ -4658,7 +4658,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[57]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;creating covered_blocks&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;creating covered_blocks&quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot; CREATE TABLE covered_blocks AS &quot;</span>
           <span class="s2">&quot; SELECT id, GROUP_CONCAT(block_id) AS sorted_ids&quot;</span>
           <span class="s2">&quot; FROM (SELECT id, block_id FROM plural_block ORDER BY id, block_id) AS a &quot;</span>
@@ -4698,7 +4698,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[58]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">covered_blocks_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM covered_blocks&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">covered_blocks_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM covered_blocks&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
 <span class="n">covered_blocks_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -4774,7 +4774,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[59]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">covered_blocks_df</span><span class="p">))</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">covered_blocks_df</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -4811,7 +4811,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[60]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">covered_blocks_df</span><span class="p">[</span><span class="n">covered_blocks_df</span><span class="o">.</span><span class="n">sorted_ids</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">covered_blocks_df</span><span class="p">[</span><span class="n">covered_blocks_df</span><span class="o">.</span><span class="n">sorted_ids</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -4876,7 +4876,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[61]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE UNIQUE INDEX covered_blocks_id_idx &quot;</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE UNIQUE INDEX covered_blocks_id_idx &quot;</span>
           <span class="s2">&quot;ON covered_blocks (id)&quot;</span><span class="p">)</span>
 </pre></div>
 
@@ -4906,7 +4906,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[62]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -4929,7 +4929,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[63]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;creating smaller_coverage&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;creating smaller_coverage&quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot; DROP TABLE IF EXISTS smaller_coverage &quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot; CREATE TABLE smaller_coverage &quot;</span>
           <span class="s2">&quot; AS SELECT a.id, block_id, sorted_ids, &quot;</span>
@@ -4972,7 +4972,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[64]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">smaller_coverage_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM smaller_coverage&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">smaller_coverage_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM smaller_coverage&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
 <span class="n">smaller_coverage_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -5050,7 +5050,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[65]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">smaller_coverage_df</span><span class="p">))</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">smaller_coverage_df</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -5087,7 +5087,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[66]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">smaller_coverage_df</span><span class="p">[</span><span class="n">smaller_coverage_df</span><span class="o">.</span><span class="n">smaller_ids</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">smaller_coverage_df</span><span class="p">[</span><span class="n">smaller_coverage_df</span><span class="o">.</span><span class="n">smaller_ids</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -5174,7 +5174,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[67]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;creating final table&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;creating final table&quot;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE final AS &quot;</span>
           <span class="s2">&quot;SELECT a.id, family_name,given_name, middle_name, dob_year, dob_month, &quot;</span>
           <span class="s2">&quot;block_id, smaller_ids &quot;</span>
@@ -5217,7 +5217,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[68]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -5230,7 +5230,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[69]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">to_match</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM final&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">to_match</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM final&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
 <span class="n">to_match</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -5342,13 +5342,13 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[70]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
 <span class="c1"># Clustering function</span>
 <span class="k">def</span> <span class="nf">candidates_gen</span><span class="p">(</span><span class="n">result_set</span><span class="p">)</span> <span class="p">:</span>
     <span class="n">lset</span> <span class="o">=</span> <span class="nb">set</span>
 
-    <span class="n">block_id</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">block_id</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result_set</span> <span class="p">:</span>
@@ -5375,8 +5375,8 @@ Name: block_key, dtype: int64</pre>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">10000</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;blocks&quot;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;blocks&quot;</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
 
         <span class="n">smaller_ids</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;smaller_ids&#39;</span><span class="p">]</span>
 
@@ -5412,7 +5412,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[71]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># this has to be set to 1 or matchBlocks fails</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># this has to be set to 1 or matchBlocks fails</span>
 <span class="n">deduper</span><span class="o">.</span><span class="n">num_cores</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 
@@ -5426,7 +5426,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[72]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM final&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM final&quot;</span><span class="p">)</span>
 <span class="c1"># cands is the iterable</span>
 <span class="n">cands</span> <span class="o">=</span> <span class="n">candidates_gen</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 </pre></div>
@@ -5465,7 +5465,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[73]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;clustering...&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;clustering...&#39;</span><span class="p">)</span>
 <span class="n">clustered_dupes</span> <span class="o">=</span> <span class="n">deduper</span><span class="o">.</span><span class="n">matchBlocks</span><span class="p">(</span><span class="n">cands</span><span class="p">)</span>
 </pre></div>
 
@@ -5514,9 +5514,9 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[74]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS entity_map&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS entity_map&quot;</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;creating entity_map database&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;creating entity_map database&#39;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE entity_map &quot;</span>
           <span class="s2">&quot;(id INTEGER, canon_id INTEGER, &quot;</span>
           <span class="s2">&quot; cluster_score FLOAT, PRIMARY KEY(id))&quot;</span><span class="p">)</span>
@@ -5555,10 +5555,10 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[75]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">scores</span> <span class="ow">in</span> <span class="n">clustered_dupes</span> <span class="p">:</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">for</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">scores</span> <span class="ow">in</span> <span class="n">clustered_dupes</span> <span class="p">:</span>
     <span class="n">cluster_id</span> <span class="o">=</span> <span class="n">cluster</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cluster</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span> <span class="p">:</span>
-        <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;INSERT INTO entity_map VALUES (</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;INSERT INTO entity_map VALUES ({}, {}, {})&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -5571,7 +5571,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[76]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE INDEX head_index ON entity_map (canon_id)&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE INDEX head_index ON entity_map (canon_id)&quot;</span><span class="p">)</span>
 <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </pre></div>
 
@@ -5585,7 +5585,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[77]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">entity_map_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM entity_map&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">entity_map_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM entity_map&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -5598,7 +5598,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[78]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">entity_map_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">entity_map_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -5679,8 +5679,8 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[79]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;# duplicate sets&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clustered_dupes</span><span class="p">))</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;# duplicate sets&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clustered_dupes</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -5717,7 +5717,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[80]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">output</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">to_dedupe</span><span class="p">,</span> <span class="n">entity_map_df</span><span class="p">,</span> <span class="n">left_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">right_on</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">output</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">to_dedupe</span><span class="p">,</span> <span class="n">entity_map_df</span><span class="p">,</span> <span class="n">left_index</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">right_on</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -5730,7 +5730,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[81]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">output</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span> <span class="s1">&#39;canon_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">output</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span> <span class="s1">&#39;canon_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -5896,7 +5896,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[86]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">output</span><span class="p">[</span><span class="n">output</span><span class="o">.</span><span class="n">family_name</span> <span class="o">==</span> <span class="s1">&#39;Meath Baker&#39;</span><span class="p">]</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">output</span><span class="p">[</span><span class="n">output</span><span class="o">.</span><span class="n">family_name</span> <span class="o">==</span> <span class="s1">&#39;Meath Baker&#39;</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -5976,7 +5976,7 @@ Name: block_key, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[87]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># save output to a csv</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># save output to a csv</span>
 <span class="n">output</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;entity_resolved_controlling_entities.csv&#39;</span><span class="p">)</span>
 </pre></div>
 
